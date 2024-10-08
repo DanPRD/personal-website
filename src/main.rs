@@ -1,7 +1,14 @@
-use axum::{routing::get, Router};
+use axum::{http::StatusCode, response::{Html, IntoResponse}, routing::get, Router};
 use tower_http::{services::{ServeDir, ServeFile}, trace::TraceLayer};
 use tracing;
 use tracing_subscriber::{layer::SubscriberExt, util::SubscriberInitExt};
+use askama::Template;
+
+#[derive(Template)]
+#[template(path="homepage.html")]
+struct HomePageTemplate<'a> {
+    name: &'a str
+}
 
 #[tokio::main]
 async fn main() {
@@ -31,6 +38,7 @@ async fn main() {
     let root_app = Router::new()
         .nest("/projects", projects)
         .nest("/blog", blog_pages)
+        .nest_service("/favicon.ico", ServeFile::new("server_files\\favicon.ico"))
         .nest_service("/static", ServeDir::new("server_files\\static").not_found_service(ServeFile::new("server_files\\static\\404.txt")))
         .route("/", get(index))
         .fallback_service(ServeFile::new("server_files\\static\\404.txt"))
@@ -42,8 +50,10 @@ async fn main() {
     axum::serve(listener, root_app).await.unwrap();
 }
 
-async fn index() -> &'static str {
-    "meow meow"
+async fn index() -> impl IntoResponse {
+    let template = HomePageTemplate {name: "Dan"};
+    let html = template.render().unwrap();
+    (StatusCode::OK, Html(html))
 }
 
 
