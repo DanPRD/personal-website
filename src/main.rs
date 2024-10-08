@@ -1,9 +1,7 @@
-use std::time::Duration;
-
-use axum::{body::Bytes, extract::MatchedPath, http::{HeaderMap, Request}, response::Response, routing::get, Router};
-use tower_http::{classify::ServerErrorsFailureClass, trace::TraceLayer};
-use tracing::{info_span, Span};
-use tracing_subscriber::{layer::{self, SubscriberExt}, util::SubscriberInitExt};
+use axum::{routing::get, Router};
+use tower_http::{services::{ServeDir, ServeFile}, trace::TraceLayer};
+use tracing;
+use tracing_subscriber::{layer::SubscriberExt, util::SubscriberInitExt};
 
 #[tokio::main]
 async fn main() {
@@ -20,29 +18,28 @@ async fn main() {
     .with(tracing_subscriber::fmt::layer())
     .init();
 
+    let blog_pages = Router::new()
+        .route("/", get(blog))
+        .route("/firstblogname", get(get_blog));
 
-    let app = Router::new()
+
+    let projects = Router::new()
+        .route("/", get(projects))
+        .route("/biome-generator", get(biome_generator));
+    
+
+    let root_app = Router::new()
+        .nest("/projects", projects)
+        .nest("/blog", blog_pages)
+        .nest_service("/static", ServeDir::new("server_files\\static").not_found_service(ServeFile::new("server_files\\static\\404.txt")))
         .route("/", get(index))
-        .route("/biome", get(biome_generator))
-        .layer(
-            TraceLayer::new_for_http()
-                .make_span_with(|request: &Request<_>| {
-                    let matched_path = request
-                        .extensions()
-                        .get::<MatchedPath>()
-                        .map(MatchedPath::as_str);
-
-                    info_span!(
-                        "http_request ",
-                        method = ?request.method(),
-                        matched_path,
-                    )
-                }));
+        .fallback_service(ServeFile::new("server_files\\static\\404.txt"))
+        .layer(TraceLayer::new_for_http());
 
 
     let listener = tokio::net::TcpListener::bind("127.0.0.1:1111").await.unwrap();
     tracing::debug!("listening on {}", listener.local_addr().unwrap());
-    axum::serve(listener, app).await.unwrap();
+    axum::serve(listener, root_app).await.unwrap();
 }
 
 async fn index() -> &'static str {
@@ -53,3 +50,17 @@ async fn index() -> &'static str {
 async fn biome_generator() -> &'static str{
     "this is a biome gen"
 }
+
+async  fn get_blog() -> &'static str {
+    "my first blog hi guys"
+}
+
+async fn projects() -> &'static str {
+    "projects"
+}
+
+async fn blog() -> &'static str {
+    "blog"
+}
+
+
