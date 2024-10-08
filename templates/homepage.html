@@ -1,3 +1,16 @@
-<div>
-    My first template :3, hello {{ name }}
-</div>
+{% extends "base.html" %}
+
+{% block head %}
+        <style>
+            .text {
+                color: #c300ff;
+            }
+        </style>
+{% endblock %}
+
+{% block content %}
+        <h1 class="text">HomePage</h1>
+        <p>Welcome {{ self.name }} :3</p>
+        <img src="static/catpfp.jpg" alt="im missing my cat :(">
+        {% call super() %}
+{% endblock %}

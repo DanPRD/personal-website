@@ -1,12 +1,20 @@
+#![allow(dead_code)]
 use axum::{http::StatusCode, response::{Html, IntoResponse}, routing::get, Router};
 use tower_http::{services::{ServeDir, ServeFile}, trace::TraceLayer};
 use tracing;
 use tracing_subscriber::{layer::SubscriberExt, util::SubscriberInitExt};
 use askama::Template;
 
+struct Meta<'a> {
+    title: &'a str,
+    desc: &'a str,
+    url: &'a str
+}
+
 #[derive(Template)]
 #[template(path="homepage.html")]
 struct HomePageTemplate<'a> {
+    meta: Meta<'a>,
     name: &'a str
 }
 
@@ -51,7 +59,10 @@ async fn main() {
 }
 
 async fn index() -> impl IntoResponse {
-    let template = HomePageTemplate {name: "Dan"};
+    let template = HomePageTemplate {
+        meta: Meta {title: "Home", desc: "Personal blog about programming and other stuff i tinker with :3", url: ""},
+        name: "Dan"
+    };
     let html = template.render().unwrap();
     (StatusCode::OK, Html(html))
 }
