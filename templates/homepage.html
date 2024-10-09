@@ -1,15 +1,10 @@
 {% extends "base.html" %}
 
 {% block head %}
-        <style>
-            .text {
-                color: #c300ff;
-            }
-        </style>
 {% endblock %}
 
 {% block content %}
-        <h1 class="text">HomePage</h1>
+        <h1 class="text-purple-500 text-2xl bg-teal-300 border-b-2 border-black">HomePage</h1>
         <p>Welcome {{ self.name }} :3</p>
         <img src="static/catpfp.jpg" alt="im missing my cat :(">
         {% call super() %}
