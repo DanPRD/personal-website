@@ -2,7 +2,13 @@ import type { Config } from "tailwindcss";
 
 const config: Config = {
   content: ["./templates/*.html"],
-  theme: {},
+  theme: {
+    extend: {
+      fontFamily: {
+        pixel: ['nokia']
+      }
+    }
+  },
   plugins: [],
 }
 

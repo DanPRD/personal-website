@@ -2,3 +2,10 @@
 @tailwind components;
 @tailwind utilities;
 
+@layer base {
+    @font-face {
+        font-family: 'nokia';
+        src: local('nokiafc22');
+        src: url("/static/nokiafc22.ttf");
+    }
+}

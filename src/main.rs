@@ -18,6 +18,24 @@ struct HomePageTemplate<'a> {
     name: &'a str
 }
 
+#[derive(Template)]
+#[template(path="projects.html")]
+struct ProjectPageTemplate<'a> {
+    meta: Meta<'a>,
+}
+
+#[derive(Template)]
+#[template(path="blog.html")]
+struct BlogHomePageTemplate<'a> {
+    meta: Meta<'a>,
+}
+
+#[derive(Template)]
+#[template(path="blogpost.html")]
+struct BlogPostTemplate<'a> {
+    meta: Meta<'a>,
+}
+
 #[tokio::main]
 async fn main() {
     tracing_subscriber::registry()
@@ -60,7 +78,7 @@ async fn main() {
 
 async fn index() -> impl IntoResponse {
     let template = HomePageTemplate {
-        meta: Meta {title: "Home", desc: "Personal blog about programming and other stuff i tinker with :3", url: ""},
+        meta: Meta {title: "Home", desc: "Personal blog about programming and projects i make :3", url: ""},
         name: "Dan"
     };
     let html = template.render().unwrap();
@@ -72,16 +90,27 @@ async fn biome_generator() -> &'static str{
     "this is a biome gen"
 }
 
-async  fn get_blog() -> &'static str {
-    "my first blog hi guys"
+async  fn get_blog() -> impl IntoResponse {
+    let template = BlogPostTemplate {
+        meta: Meta {title: "Projects", desc: "Display for any projects i have made", url: "blog/firstblogname"},
+    };
+    let html = template.render().unwrap();
+    (StatusCode::OK, Html(html))
 }
 
-async fn projects() -> &'static str {
-    "projects"
+async fn projects() -> impl IntoResponse {
+    let template = ProjectPageTemplate {
+        meta: Meta {title: "Projects", desc: "Display for any projects i have made", url: "projects"},
+    };
+    let html = template.render().unwrap();
+    (StatusCode::OK, Html(html))
 }
 
-async fn blog() -> &'static str {
-    "blog"
+async fn blog() -> impl IntoResponse {
+    let template = BlogHomePageTemplate {
+        meta: Meta {title: "Blog", desc: "Blog homepage where you can find all my posts", url: "blog"},
+    };
+    let html = template.render().unwrap();
+    (StatusCode::OK, Html(html))
 }
-
 
