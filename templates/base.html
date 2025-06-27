@@ -3,6 +3,8 @@
     <head>
         <title>{{ self.meta.title }}</title>
 
+        <link rel="preload" as="image" href="/static/images/background.png">
+
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <meta name="description" content="{{ self.meta.desc }}">
         <meta name="author" content="Daniel Pritchard">
@@ -20,9 +22,12 @@
         
     </head>
 
-    <body class="bg-[#A9A9A9]">
-        <div id="content" class="font-pixel">
-            <h1 class="bg-[#191970] text-white">C:/{{self.meta.url}}</h1>
+    <body  class="bg-gray-700 bg-cover pixelated [background-image:url('/static/images/background.png');]">
+        <a class="absolute top-0 left-0" href="/">
+            <img class="pixelated" width="175px" src="/static/images/sign.gif"/>
+        </a>
+
+        <div id="content">
             {% block content %}
             {% endblock %}
         </div>

@@ -5,7 +5,8 @@ const config: Config = {
   theme: {
     extend: {
       fontFamily: {
-        pixel: ['nokia']
+        pixel: ['nokia'],
+        w95: ['w95fa']
       }
     }
   },
