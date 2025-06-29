@@ -4,12 +4,8 @@
 
 @layer base {
     @font-face {
-        font-family: 'nokia';
-        src: url("/static/nokiafc22.ttf");
-    }
-    @font-face {
-        font-family: 'w95fa';
-        src: url("/static/w95fa.woff2");
+        font-family: 'vv';
+        src: url("/static/vermin_vibes_1989.ttf");
     }
 }
 

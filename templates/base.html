@@ -3,15 +3,13 @@
     <head>
         <title>{{ self.meta.title }}</title>
 
-        <link rel="preload" as="image" href="/static/images/background.png">
-
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <meta name="description" content="{{ self.meta.desc }}">
         <meta name="author" content="Daniel Pritchard">
         <meta name="keywords" content="programming, coding, tech, cat, rust, software engineering, cyber, cyber security">
         <meta property="og:title" content="{{ self.meta.title }}">
         <meta property="og:description" content="{{ self.meta.desc }}">
-        <meta property="og:image" content="https://localhost:1111/static/catpfp.jpg">
+        <meta property="og:image" content="https://localhost:1111/static/images/catpfp.jpg">
         <meta property="og:url" content="https://localhost:1111/{{ self.meta.url }}">
         <meta property="og:type" content="website" >
 
@@ -22,10 +20,7 @@
         
     </head>
 
-    <body  class="bg-gray-700 bg-cover pixelated [background-image:url('/static/images/background.png');]">
-        <a class="absolute top-0 left-0" href="/">
-            <img class="pixelated" width="175px" src="/static/images/sign.gif"/>
-        </a>
+    <body class="bg-[#14001f] text-white fill-white">
 
         <div id="content">
             {% block content %}

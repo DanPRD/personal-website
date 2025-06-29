@@ -6,7 +6,8 @@ const config: Config = {
     extend: {
       fontFamily: {
         pixel: ['nokia'],
-        w95: ['w95fa']
+        w95: ['w95fa'],
+        vv: ['vv']
       }
     }
   },
